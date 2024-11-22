@@ -1,6 +1,6 @@
 # Flyerz
 
-## Install your environment (First Time)
+## First time you work on the project
 
 Exit from your current environment if needed
 
