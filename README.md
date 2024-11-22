@@ -64,6 +64,8 @@ If you need to reset the environment and start over:
 
 2. Delete the `Flyerz` folder.
 
+3. Start over with `First Time Setup (Only Once)`
+
 ---
 
 ## Links
