@@ -15,7 +15,7 @@ Create the environment:
     cd Flyerz
     conda create -n flyerz_env python=3.12
 
-Now you're ready to follow the steps in "Next time you work on the project."
+Now you're ready to follow the steps in "Next Time You Work on the Project."
 
 ---
 
