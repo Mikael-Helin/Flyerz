@@ -10,16 +10,10 @@ Then clone this project:
 
     git clone git@github.com:Mikael-Helin/Flyerz.git
 
-Create the environment and activate it:
+Create the environment:
 
     cd Flyerz
     conda create -n flyerz_env python=3.12
-    conda activate flyerz_env
-
-Install dependencies:
-
-    pip install -r requirements.txt
-    conda deactivate
 
 Now you're ready to follow the steps in "Next time you work on the project."
 
@@ -27,20 +21,35 @@ Now you're ready to follow the steps in "Next time you work on the project."
 
 ## Next Time You Work on the Project
 
-Ensure you're in the Flyerz folder.
+If you are not in the `Flyerz` folder, then cd into it:
 
-**When starting your day:**
+    cd Flyerz
+
+Sync with the latest changes:
 
     conda activate flyerz_env
-    git pull  # Sync with the latest changes
-    git checkout -b feature/<your-feature-name>
+    git pull
+    pip install -r requirements.txt
+
+Now prepare to start to work on your branch
+
+    git checkout -b feature/my_feature_is_better_than_yours
     python manage.py runserver
-    code .  # Open your editor
+    code .
 
 **When ending your day:**
 
-    git push origin feature/<your-feature-name>
+Do never forget to push back your work
+
+    git add .
+    git commit -m "My awesome comment"
+    git push origin feature/my_feature_is_better_than_yours
+
+Go back to start
+
+    git checkout main
     conda deactivate
+    cd ..
 
 ---
 
