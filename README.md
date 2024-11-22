@@ -26,6 +26,18 @@ Install dependencies
     conda activate flyerz_env
     code .
 
+## Remove everything
+
+In case you need to start over, this is what you do
+
+Deactivate and remove the environment
+
+    deactivate
+    conda env list # To list, if you want to
+    conda remove --name flyerz_env --all
+
+Then delete the `Flyerz` folder.
+
 ## Links
 
     https://github.com/NikolettaGr/Git-Collaborative
