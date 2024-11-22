@@ -1,43 +1,64 @@
 # Flyerz
 
-## First time you work on the project
+## First Time Setup (Only Once)
 
-Exit from your current environment if needed
+Exit any current environment if active:
 
-    deactivate
+    conda deactivate
 
-Then clone this project
+Then clone this project:
 
     git clone git@github.com:Mikael-Helin/Flyerz.git
 
-Create the environment and enter it
+Create the environment and activate it:
 
     cd Flyerz
     conda create -n flyerz_env python=3.12
     conda activate flyerz_env
 
-Install dependencies
+Install dependencies:
 
     pip install -r requirements.txt
-    code .
+    conda deactivate
 
-## Next Time when you work on the project
+Now you're ready to follow the steps in "Next time you work on the project."
+
+---
+
+## Next Time You Work on the Project
+
+Ensure you're in the Flyerz folder.
+
+**When starting your day:**
 
     conda activate flyerz_env
-    code .
+    git pull  # Sync with the latest changes
+    git checkout -b feature/<your-feature-name>
+    python manage.py runserver
+    code .  # Open your editor
 
-## Remove everything
+**When ending your day:**
 
-In case you need to start over, this is what you do
+    git push origin feature/<your-feature-name>
+    conda deactivate
 
-Deactivate and remove the environment
+---
 
-    deactivate
-    conda env list # To list, if you want to
-    conda remove --name flyerz_env --all
+## Reset Everything
 
-Then delete the `Flyerz` folder.
+If you need to reset the environment and start over:
+
+1. Deactivate and remove the environment:
+
+        conda deactivate
+        conda remove --name flyerz_env --all
+
+2. Delete the `Flyerz` folder.
+
+---
 
 ## Links
 
-    https://github.com/NikolettaGr/Git-Collaborative
+- [Git Collaboration Guide](https://github.com/NikolettaGr/Git-Collaborative)
+- [Django Documentation](https://docs.djangoproject.com)
+- [Conda Documentation](https://docs.conda.io/en/latest/)
