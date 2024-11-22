@@ -1,12 +1,16 @@
 # Flyerz
 
-## Install your environment
+## Install your environment (First Time)
 
-Exit from other environment if needed
+Exit from your current environment if needed
 
     deactivate
 
-Create the environment
+Then clone this project
+
+    git clone git@github.com:Mikael-Helin/Flyerz.git
+
+Create the environment and enter it
 
     conda create -n flyers_env python=3.12
     conda activate flyers_env
@@ -14,7 +18,12 @@ Create the environment
 Install dependencies
 
     pip install -r requirements.txt
+    code .
 
+## Next Time when you work on the project
+
+    conda activate flyers_env
+    code .
 
 ## Links
 
