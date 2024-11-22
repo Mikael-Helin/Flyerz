@@ -12,8 +12,9 @@ Then clone this project
 
 Create the environment and enter it
 
-    conda create -n flyers_env python=3.12
-    conda activate flyers_env
+    cd Flyerz
+    conda create -n flyerz_env python=3.12
+    conda activate flyerz_env
 
 Install dependencies
 
@@ -22,7 +23,7 @@ Install dependencies
 
 ## Next Time when you work on the project
 
-    conda activate flyers_env
+    conda activate flyerz_env
     code .
 
 ## Links
