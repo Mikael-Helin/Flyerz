@@ -73,3 +73,7 @@ If you need to reset the environment and start over:
 - [Git Collaboration Guide](https://github.com/NikolettaGr/Git-Collaborative)
 - [Django Documentation](https://docs.djangoproject.com)
 - [Conda Documentation](https://docs.conda.io/en/latest/)
+
+## Contributors
+
+- [Silvia](https://github.com/Da-Ronja)
