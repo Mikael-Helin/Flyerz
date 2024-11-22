@@ -1,8 +1,16 @@
 # Flyerz
 
-First time
+## Install your environment
 
-    deactivate # Exit from other envs if needed
+Exit from other environment if needed
+
+    deactivate
+
+Create the environment
+
     conda create -n flyers_env python=3.12
     conda activate flyers_env
 
+Install dependencies
+
+    pip install -r requirements.txt
