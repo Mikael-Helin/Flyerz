@@ -14,3 +14,8 @@ Create the environment
 Install dependencies
 
     pip install -r requirements.txt
+
+
+## Links
+
+    https://github.com/NikolettaGr/Git-Collaborative
