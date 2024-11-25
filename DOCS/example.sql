@@ -15,9 +15,10 @@ CREATE TABLE users (
 
 CREATE TABLE friends (
     id SERIAL PRIMARY KEY,
-    user1_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE, -- Remember, always put user1_id < user2_id
+    user1_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user1_accepted TIMESTAMP DEFAULT NULL,
     user2_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE, 
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user2_accepted TIMESTAMP DEFAULT NULL,
     UNIQUE (user1_id, user2_id),
     CHECK (user1_id < user2_id)
 );
