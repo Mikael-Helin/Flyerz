@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+{% if request.user.is_authenticated %}
+	INLOGGAD
+	<form action="{% url 'logout' %}" method="post">
+		{% csrf_token %}
+		<button type="submit">Log out</button>
+	</form>
+{% else %}
+	UTLOGGAD
+	<a href="{% url 'login' %}">Logga in</a>
+{% endif %}
+
+
+
+<h1>Hello Landingpage</h1>
+{% endblock %}
