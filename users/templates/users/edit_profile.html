@@ -1,3 +1,19 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>Edit Profile</h1>
+
+{% if success_message %}
+<p>{{ success_message }}</p>
+
+{% else %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>
+
+{% endif %}
+
+<a href="{% url 'users:profile' %}">Back to Profile</a>
+{% endblock %}
