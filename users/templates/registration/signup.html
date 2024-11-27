@@ -1,7 +1,22 @@
 {% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" href="{% static 'users/css/users.css' %}">
 {% endblock %}
 {% block body %}
-<h1>SIGNUP</h1>
+    <h1>SIGNUP</h1>
+
+    {% if success_message %}
+        <div class="alert">
+            {{ success_message }}
+        </div>
+        <a href="{% url 'login' %}">
+            <button>Go to Login</button>
+        </a>
+    {% else %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    {% endif %}
 {% endblock %}
