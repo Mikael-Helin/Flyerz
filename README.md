@@ -66,7 +66,6 @@ If you need to reset the environment and start over:
 
 3. Start over with `First Time Setup (Only Once)`
 
---- test
 
 ---
 
@@ -76,6 +75,7 @@ If you need to reset the environment and start over:
 - [Django Documentation](https://docs.djangoproject.com)
 - [Conda Documentation](https://docs.conda.io/en/latest/)
 
-## Contributors
+## Contributors 
 
 - [Silvia](https://github.com/Da-Ronja)
+- [Nikoletta](https://github.com/NikolettaGr)
