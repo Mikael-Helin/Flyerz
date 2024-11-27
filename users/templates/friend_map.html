@@ -1,0 +1,54 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friend Map</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Friend Map</h1>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                {% for user in users %}
+                    <th>{{ user.username }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_x in users %}
+            <tr>
+                <th>{{ user_x.username }}</th>
+                {% for user_y in users %}
+                    {% if user_x.username == user_y.username %}
+                        <td></td>  <!-- Leave diagonal cells blank -->
+                    {% else %}
+                        {% with user_x.username|add:"-"|add:user_y.username as key %}
+                        <td>{{ friendship_map|friendship_key:key|default:"-" }}</td>
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/users">Back</a>
+</body>
+</html>

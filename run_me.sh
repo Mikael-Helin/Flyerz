@@ -14,7 +14,7 @@ python manage.py migrate
 if [ -f db.sqlite3 ]; then
     echo "Database already exists"
 else
-    echo "Database does not, copying from backup"
+    echo "Database does not exist, copying from backup"
     cp db_bak.sqlite3 db.sqlite3
 fi
 
