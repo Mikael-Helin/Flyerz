@@ -1,10 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UserRegisterForm
+from users.models import User
 
 
 def profile(request):
-    return render(request, "users/profile.html", {})
+    user_details = User
+    return render(request, "users/profile.html", {user_details: user_details})
 
 def signup(request):
     success_message = None
