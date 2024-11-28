@@ -31,6 +31,34 @@
                 {% endfor %}
             </tr>
         </thead>
+        <h2>Timestamps</h2>
+        <tbody>
+            {% for user_x in users %}
+            <tr>
+                <th>{{ user_x.username }}</th>
+                {% for user_y in users %}
+                    {% if user_x.username == user_y.username %}
+                        <td></td>  <!-- Leave diagonal cells blank -->
+                    {% else %}
+                        {% with user_x.username|add:"-"|add:user_y.username as key %}
+                        <td>{{ friendship_map|friendship_key:key|default:"" }}</td>
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                {% for user in users %}
+                    <th>{{ user.username }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <h2>Friends</h2>
         <tbody>
             {% for user_x in users %}
             <tr>
@@ -46,7 +74,6 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-        </tbody>
     </table>
     <br>
     <a href="/users">Back</a>
