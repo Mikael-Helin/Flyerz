@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, LoginForm
+from django.contrib.auth import authenticate, login
 
 
 def profile(request):
@@ -21,12 +22,19 @@ def signup(request):
     return render(request, "registration/signup.html", {
         'form': form, 'success_message': success_message})
 
-def login(request):
+def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
-
         if form.is_valid():
-            pass
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password']
+            )
+            if user:
+                login(request, user)
+                redirect('/')
+            else:
+                print('bad username password')
     else:
         form = LoginForm()
 
