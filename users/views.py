@@ -21,4 +21,5 @@ def signup(request):
     return render(request, "registration/signup.html", {
         'form': form, 'success_message': success_message})
 
-    
+def login(request):
+    return HttpResponse("OK")
