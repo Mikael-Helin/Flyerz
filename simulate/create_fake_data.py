@@ -114,6 +114,7 @@ for member in members.keys():
     user_b = max(member, someone)
     if user_a not in friends:
         friends[user_a] = {}
+    
     # Max 40 requests
     if len(friends[user_a]) >= 40:
         continue
@@ -127,9 +128,12 @@ for member in members.keys():
         friends[user_a][user_b] = [None, request_friendship_time]
 
 # Accept friend requests
-for user_a in members.keys():
+for user_a in list(members.keys()):
     # 50% chance to accept
     if random.random() < 0.5:
+        continue
+
+    if user_a not in friends:
         continue
 
     for user_b in friends[user_a]:
@@ -142,22 +146,24 @@ for user_a in members.keys():
 
 def insert_friend_requests():
     for user_a, friend_data in friends.items():
-        for user_b, times in friend_data.items():
+        for user_b in friend_data.keys():
             # Fetch user IDs for user_a and user_b
             cursor.execute("SELECT id FROM users_user WHERE username = ?", (members[user_a]["username"],))
-            user_a_id = cursor.fetchone()[0]
+            from_user_id = cursor.fetchone()[0]
+
             cursor.execute("SELECT id FROM users_user WHERE username = ?", (members[user_b]["username"],))
-            user_b_id = cursor.fetchone()[0]
+            to_user_id = cursor.fetchone()[0]
 
-            # Unpack friendship request/accept times
-            request_time, accept_time = times
-
-            # Insert friendship data into the users_user_friends table
-            cursor.execute("""
-                INSERT INTO users_user_friends (
-                    user_1_id, user_2_id, accepted_time_1, accepted_time_2
-                ) VALUES (?, ?, ?, ?)
-            """, (user_a_id, user_b_id, request_time, accept_time))
+            # Insert friendship into the users_user_friends table
+            try:
+                cursor.execute("""
+                    INSERT INTO users_user_friends (
+                        from_user_id, to_user_id
+                    ) VALUES (?, ?)
+                """, (from_user_id, to_user_id))
+            except sqlite3.IntegrityError:
+                # Skip duplicates (violating the unique constraint)
+                print(f"Friendship between {user_a} and {user_b} already exists.")
 
     conn.commit()
 
