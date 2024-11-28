@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, LoginForm
 
 
 def profile(request):
@@ -23,10 +23,15 @@ def signup(request):
 
 def login(request):
     if request.method == "POST":
-        pass
-    else:
-        pass
+        form = LoginForm(request.POST)
 
-    context = {}
+        if form.is_valid():
+            pass
+    else:
+        form = LoginForm()
+
+    context = {
+        "form": form
+    }
 
     return render(request, "users/login.html", context)
