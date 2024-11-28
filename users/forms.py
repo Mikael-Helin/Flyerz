@@ -1,11 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from .models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.validators import MinLengthValidator # https://docs.djangoproject.com/en/5.1/ref/validators/#built-in-validators
 
-User = get_user_model() # googlede error message to this response https://stackoverflow.com/questions/17873855/manager-isnt-available-user-has-been-swapped-for-pet-person
-class UserRegisterForm(UserCreationForm):
+class UserRegistrationForm(UserCreationForm):
 
     username = forms.CharField(
         validators=[
@@ -53,3 +51,37 @@ class UserRegisterForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('This email is already in use.')
         return email
+
+class UserUpdateForm(UserChangeForm):
+    password = None # Hide the password field from the form
+
+    username = forms.CharField(
+        validators=[
+            MinLengthValidator(
+                3, 
+                message='Your username must contain at least 3 characters.'
+            ),
+        ],
+        error_messages={
+            'unique': 'A user with that username already exists.',
+        },
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your username.'})
+    )
+
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address.'}),
+    )
+
+    first_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your first name.'}),
+    )
+
+    last_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your last name.'}),
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
