@@ -1,43 +1,39 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from .forms import UserRegisterForm, UserUpdateForm
-from users.models import User
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm, UserUpdateForm
+from .models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 def profile(request):
     user_details = User
     return render(request, "users/profile.html", {user_details: user_details})
 
-@login_required
-def edit_profile(request):
-    current_user = request.user
-    success_message = None
-
-    if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST, instance=current_user)
-        if user_form.is_valid():
-            user_form.save()
-            success_message = "Your profile has been updated successfully."
-    else:
-        user_form = UserUpdateForm(instance=current_user)
-
-    return render(request, "users/edit_profile.html", {
-        'user_form': user_form,
-        'success_message': success_message
-    })
-
 def signup(request):
-    success_message = None
-   
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         
         if form.is_valid():
             form.save()
-            success_message = "Your account has been created successfully."
-            form = UserRegisterForm()
+            messages.success(request, "Your account has been created successfully.")
+            return redirect('login')
     else:
-        form = UserRegisterForm()
-    return render(request, "registration/signup.html", {
-        'form': form, 'success_message': success_message})
+        form = UserRegistrationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
+@login_required
+def edit_profile(request):
+    if 'action' in request.POST:
+        if request.POST['action'] == 'save':
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            if user_form.is_valid():
+                user_form.save()
+                messages.success(request, "Your profile has been updated successfully.")
+                return redirect('users:profile')
+        elif request.POST['action'] == 'cancel':
+            return redirect('users:profile')
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        print("Initial values in form:", user_form.initial) # Debugging
+
+    return render(request, 'users/edit_profile.html', {'user_form': user_form})
