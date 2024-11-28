@@ -22,4 +22,4 @@ def signup(request):
         'form': form, 'success_message': success_message})
 
 def login(request):
-    return HttpResponse("OK")
+    return HttpResponse("Heloo world")
