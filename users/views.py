@@ -22,4 +22,11 @@ def signup(request):
         'form': form, 'success_message': success_message})
 
 def login(request):
-    return HttpResponse("Heloo world")
+    if request.method == "POST":
+        pass
+    else:
+        pass
+
+    context = {}
+
+    return render(request, "users/login.html", context)
