@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'public_pages.apps.PublicPagesConfig',
+    'teams.apps.TeamsConfig',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
