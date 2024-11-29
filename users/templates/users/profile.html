@@ -19,8 +19,8 @@
 {% if user.is_authenticated %}
 <h3>Edit profile</h3>
 <button><a href="{% url 'users:edit_profile' %}">Update Profile</a></button>
-<button>Change Password</button>
-<button>Delete Profile</button>
+<button><a href="{% url 'users:change_password' %}">Change Password</a></button>
+<button><a href="{% url 'users:delete_user' user.pk %}">Delete Profile</a></button>
 
 <h3>Logout</h3>
 <form action="{% url 'logout' %}" method="post">

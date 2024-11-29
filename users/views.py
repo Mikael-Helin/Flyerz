@@ -4,6 +4,7 @@ from .forms import UserRegistrationForm, UserUpdateForm
 from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic import DeleteView
 
 def profile(request):
     user_details = User
@@ -38,3 +39,7 @@ def edit_profile(request):
         print("Initial values in form:", user_form.initial) # Debugging
 
     return render(request, 'users/edit_profile.html', {'user_form': user_form})
+
+class DeleteUserView(DeleteView):
+    model = User
+    success_url = '/'
