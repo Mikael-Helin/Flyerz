@@ -7,7 +7,7 @@ from django.contrib import messages
 
 def profile(request):
     user_details = User
-    return render(request, "users/profile.html", {user_details: user_details})
+    return render(request, 'users/profile.html', {user_details: user_details})
 
 def signup(request):
     if request.method == 'POST':
@@ -20,6 +20,7 @@ def signup(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
 
 @login_required
 def edit_profile(request):

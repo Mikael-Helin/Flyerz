@@ -31,21 +31,37 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <!-- Search Bar -->
+                    <form class="d-flex me-4" role="search">
+                        <input class="form-control me-2 custom-search" type="search" placeholder="Search"
+                            aria-label="Search">
+                        <button class="btn btn-outline-light custom-search-btn" type="submit">Search</button>
+                    </form>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}text-orange{% else %}text-light{% endif %}"
-                            aria-current="page" href="{% url 'landingpage' %}">Home</a>
+                        <a class="nav-link me-3" aria-current="page" href="{% url 'landingpage' %}">Home</a>
                     </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item me-3">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item me-3">
+                        {% if user.is_authenticated %}
+                        <!-- If the user is authenticated, link to the profile page -->
+                        <a class="nav-link" href="{% url 'users:profile' %}"><i
+                                class="fa-solid fa-user fa-lg text-orange"></i></a>
+                        {% else %}
+                        <!-- If the user is not authenticated, link to the login page -->
+                        <a class="nav-link" href="{% url 'login' %}"><i
+                                class="fa-solid fa-user fa-lg text-orange"></i></a>
+                        {% endif %}
+                    </li>
+
                 </ul>
-                <!-- Search Bar -->
-                <form class="d-flex me-4" role="search">
-                    <input class="form-control me-2 custom-search" type="search" placeholder="Search"
-                        aria-label="Search">
-                    <button class="btn btn-outline-light custom-search-btn" type="submit">Search</button>
-                </form>
-                <a class="btn custom-btn px-3 py-2" href="{% url 'login' %}">Login</a>
             </div>
         </div>
     </nav>
