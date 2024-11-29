@@ -1,90 +1,78 @@
-#!/usr/bin/env python3
-
-import os
-import sys
-from faker import Faker
 import time
 import random
 import sqlite3
-import shutil
+import os
 
-DB2 = "db2.sqlite3"
 DB_SIM = "db_sim.sqlite3"
 
 # -- CHECKS --
 
-# Check if db_su.sqlite3 exists
-if not os.path.isfile(DB2):
-    print("db with friends table does not exists")
-    print(f"please create {DB2}")
+# Check if DB_SIM exists
+if not os.path.isfile(DB_SIM):
+    print(f"Please create {DB_SIM}")
     exit(1)
 
-# Reset database
-if os.path.isfile(DB_SIM):
-    os.remove(DB_SIM)
-shutil.copy(DB2, DB_SIM)
-
-# Check if requirements-sim.txt exists
-if not os.path.isfile("requirements-sim.txt"):
-    print("requirements-sim.txt missing")
-    exit(1)
-
-# If directory venv does not exists, then exit
-if not os.path.isdir("venv"):
-    help = """
-You do not have any venv directory, please run following (cut and paste)
-
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements-sim.txt
-
-And then run this script again!
-"""
-    print(help)
-    exit(1)
-
-# Check if table users_user_friends exists
+# Connect to the database
 conn = sqlite3.connect(DB_SIM)
 cursor = conn.cursor()
+
+# Check if table users_user_friends exists
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users_user_friends'")
 if cursor.fetchone() is None:
-    print("Table users_user_friends does not exist in db2.sqlite3")
+    print("Table users_user_friends does not exist in db_sim.sqlite3")
     print("Please create it first")
     exit(1)
 
 # Read Users from db_sim.sqlite3
-# fetching username, for debug/dev purpose
-cursor.execute("SELECT id, username, date_joined FROM users_user")
+cursor.execute("SELECT id, username, date_joined, is_superuser FROM users_user")
 
 members = {}
 for member in cursor.fetchall():
-    id, name, joined = member
-    # joined format 2024-11-28 12:49:17.203966
-    # convert into unix timestamp with seconds
-    joined = int(time.mktime(time.strptime(joined, "%Y-%m-%d %H:%M:%S.%f")))
+    id, name, joined, is_superuser = member
+
+    # Skip superusers
+    if is_superuser:
+        continue
+
+    # Convert Django ISO datetime to Unix timestamp
+    try:
+        joined = int(time.mktime(time.strptime(joined, "%Y-%m-%d %H:%M:%S.%f")))
+    except ValueError:
+        print(f"Invalid date format for user {name}: {joined}. Skipping.")
+        continue
+
     members[id] = {"username": name, "joined": joined}
+
 N = len(members)
 
 # Simulate friend requests
 friends = {}
-for member_id in range(1, N+1):
-    # 20% chance to be in mood to connect
+for member_id in range(1, N + 1):
+    # Skip users not in members dictionary
+    if member_id not in members:
+        continue
+
+    # 20% chance to connect
     if N > 100 and random.random() < 0.8:
         continue
 
-    someone_id = random.randint(1, N+1)
-    # user_a < user_b (sorted)
+    someone_id = random.randint(1, N)  # Fix range to avoid out-of-bounds
+    if someone_id not in members or someone_id == member_id:
+        continue
+
+    # Ensure consistent ordering for friendship
     user_a = min(member_id, someone_id)
     user_b = max(member_id, someone_id)
+
     if user_a not in friends:
         friends[user_a] = {}
 
-    # Max 40 requests
+    # Max 40 requests per user
     if len(friends[user_a]) >= 40:
         continue
 
     register_time = members[member_id]["joined"]
-    request_friendship_time = register_time + random.randint(1,31)*24*60*60
+    request_friendship_time = register_time + random.randint(1, 31) * 24 * 60 * 60
 
     if member_id == user_a:
         friends[user_a][user_b] = [request_friendship_time, None]
@@ -92,52 +80,39 @@ for member_id in range(1, N+1):
         friends[user_a][user_b] = [None, request_friendship_time]
 
 # Simulate accept friend requests
-for user_a in range(1, N+1):
-    # 50% chance to accept
-    if random.random() < 0.5:
-        continue
-
+for user_a in range(1, N + 1):
     if user_a not in friends:
         continue
 
-    for user_b in friends[user_a].keys():
+    for user_b in friends[user_a]:
         # 50% chance to accept
         if random.random() < 0.5:
             continue
+
+        time_delta = random.randint(1, 31) * 24 * 60 * 60
         if friends[user_a][user_b][0] is None:
-            friends[user_a][user_b][0] = friends[user_a][user_b][1] + random.randint(1,31)*24*60*60
+            friends[user_a][user_b][0] = friends[user_a][user_b][1] + time_delta
         else:
-            friends[user_a][user_b][1] = friends[user_a][user_b][0] + random.randint(1,31)*24*60*60
-
-exit(1)
-
-# FUNCTIONS
+            friends[user_a][user_b][1] = friends[user_a][user_b][0] + time_delta
 
 # Populate the database with friend requests
 def insert_friend_requests():
     for user_a, friend_data in friends.items():
-        for user_b in friend_data.keys():
-            # Fetch user IDs for user_a and user_b
-            cursor.execute("SELECT id FROM users_user WHERE username = ?", (members[user_a]["username"],))
-            from_user_id = cursor.fetchone()[0]
+        for user_b, times in friend_data.items():
+            accepted_time_1, accepted_time_2 = times
 
-            cursor.execute("SELECT id FROM users_user WHERE username = ?", (members[user_b]["username"],))
-            to_user_id = cursor.fetchone()[0]
-
-            # Insert friendship into the users_user_friends table
             try:
                 cursor.execute("""
                     INSERT INTO users_user_friends (
-                        from_user_id, to_user_id
-                    ) VALUES (?, ?)
-                """, (from_user_id, to_user_id))
+                        user_1_id, user_2_id, accepted_time_1, accepted_time_2
+                    ) VALUES (?, ?, ?, ?)
+                """, (user_a, user_b, accepted_time_1, accepted_time_2))
             except sqlite3.IntegrityError:
-                # Skip duplicates (violating the unique constraint)
                 print(f"Friendship between {user_a} and {user_b} already exists.")
 
     conn.commit()
 
 # MAIN
-
 if __name__ == "__main__":
     insert_friend_requests()
+    conn.close()

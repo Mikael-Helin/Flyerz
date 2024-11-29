@@ -7,6 +7,7 @@ import time
 import random
 import sqlite3
 import shutil
+from datetime import datetime
 
 DB_SU = "db_su.sqlite3"
 DB_SIM = "db_sim.sqlite3"
@@ -90,7 +91,10 @@ def insert_members():
         first_name, last_name = name.split(" ")
         username = f"{first_name.lower()}.{last_name.lower()}"
         email = info["email"]
-        date_joined = a_year_ago + random.randint(0,300)*24*60*60
+        # Generate random date in seconds from a year ago and convert to Django datetime format
+        random_seconds = random.randint(0, 300) * 24 * 60 * 60
+        date_joined_unix = a_year_ago + random_seconds
+        date_joined = datetime.fromtimestamp(date_joined_unix).strftime("%Y-%m-%d %H:%M:%S.%f")
         password = "p@ssw0rd1"
         
         cursor.execute("""
