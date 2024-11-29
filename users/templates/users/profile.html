@@ -18,10 +18,9 @@
 
 {% if user.is_authenticated %}
 <h3>Edit profile</h3>
-<form action="{% url 'users:edit_profile' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Edit profile</button>
-</form>
+<button><a href="{% url 'users:profile_update' %}">Update Profile</a></button>
+<button>Change Password</button>
+<button>Delete Profile</button>
 
 <h3>Logout</h3>
 <form action="{% url 'logout' %}" method="post">
