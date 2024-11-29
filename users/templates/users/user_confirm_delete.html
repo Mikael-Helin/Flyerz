@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Confirm Delete</h1>
+<p>Are you sure you want to delete your profile?</p>
+<form action="{% url 'users:delete_user' user.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Yes</button>
+    <button><a href="{% url 'users:profile' %}">No</a></button>
+</form>
+{% endblock %}

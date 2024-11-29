@@ -21,4 +21,5 @@ urlpatterns = [
         ),
         name="password_change_done"
     ), #https://docs.djangoproject.com/en/5.1/topics/auth/default/#module-django.contrib.auth.views
+    path("delete-user/<int:pk>/", views.DeleteUserView.as_view(), name="delete_user"),
 ]
