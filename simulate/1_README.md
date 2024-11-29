@@ -1,5 +1,7 @@
 # Creating Fake users
 
+Populates the table db_sim.sqlite3 which you have to copy manually.
+
 ## Creating the Superuser
 
 Here are 2 examples on how you can create the superuser...

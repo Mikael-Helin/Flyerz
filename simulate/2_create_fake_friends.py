@@ -43,45 +43,73 @@ And then run this script again!
     print(help)
     exit(1)
 
-# Read Users from db2.sqlite3
-
-conn = sqlite3.connect(DB2)
+# Check if table users_user_friends exists
+conn = sqlite3.connect(DB_SIM)
 cursor = conn.cursor()
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users_user_friends'")
+if cursor.fetchone() is None:
+    print("Table users_user_friends does not exist in db2.sqlite3")
+    print("Please create it first")
+    exit(1)
 
-# Also fetching username, for debug/dev purpose
-cursor.execute("SELECT id, username FROM users_user")
+# Read Users from db_sim.sqlite3
+# fetching username, for debug/dev purpose
+cursor.execute("SELECT id, username, date_joined FROM users_user")
 
 members = {}
 for member in cursor.fetchall():
-    id, name = member
-    members[id] = name
+    id, name, joined = member
+    # joined format 2024-11-28 12:49:17.203966
+    # convert into unix timestamp with seconds
+    joined = int(time.mktime(time.strptime(joined, "%Y-%m-%d %H:%M:%S.%f")))
+    members[id] = {"username": name, "joined": joined}
 N = len(members)
 
+# Simulate friend requests
 friends = {}
-for member in members.keys():
+for member_id in range(1, N+1):
     # 20% chance to be in mood to connect
     if N > 100 and random.random() < 0.8:
         continue
 
-    someone = random.choice([key for key in members.keys() if key != member])
+    someone_id = random.randint(1, N+1)
     # user_a < user_b (sorted)
-    user_a = min(member, someone)
-    user_b = max(member, someone)
+    user_a = min(member_id, someone_id)
+    user_b = max(member_id, someone_id)
     if user_a not in friends:
         friends[user_a] = {}
-    
+
     # Max 40 requests
     if len(friends[user_a]) >= 40:
         continue
 
-    register_time = members[member]["joined"]
+    register_time = members[member_id]["joined"]
     request_friendship_time = register_time + random.randint(1,31)*24*60*60
 
-    if member == user_a:
+    if member_id == user_a:
         friends[user_a][user_b] = [request_friendship_time, None]
     else:
         friends[user_a][user_b] = [None, request_friendship_time]
 
+# Simulate accept friend requests
+for user_a in range(1, N+1):
+    # 50% chance to accept
+    if random.random() < 0.5:
+        continue
+
+    if user_a not in friends:
+        continue
+
+    for user_b in friends[user_a].keys():
+        # 50% chance to accept
+        if random.random() < 0.5:
+            continue
+        if friends[user_a][user_b][0] is None:
+            friends[user_a][user_b][0] = friends[user_a][user_b][1] + random.randint(1,31)*24*60*60
+        else:
+            friends[user_a][user_b][1] = friends[user_a][user_b][0] + random.randint(1,31)*24*60*60
+
+exit(1)
 
 # FUNCTIONS
 
