@@ -15,7 +15,7 @@ DB_SIM = "db_sim.sqlite3"
 
 # Check if db_su.sqlite3 exists
 if not os.path.isfile(DB_SU):
-    print("db with suåeruser only, does not exists")
+    print("db with superuser only, does not exists")
     print(f"please create {DB_SU}")
     exit(1)
 
