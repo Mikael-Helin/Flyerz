@@ -8,9 +8,13 @@ import random
 import sqlite3
 import shutil
 from users.models import User
+import django
 
 DB_SU = "db_su.sqlite3"
 DB_SIM = "db_sim.sqlite3"
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flyerz.settings')  # Replace 'flyerz' with your project name if different
+django.setup()
 
 # -- CHECKS --
 
