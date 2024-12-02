@@ -6,7 +6,15 @@
 HEJ!
 <form method="post">
     {% csrf_token %}
-
+    <label for="title">title:</label>
+    <input type="text" name="title" id="title">
+    <label for="description">description</label>
+    <input type="text" name="description" id="description">
+    <label for="date">date</label>
+    <input type="date" name="date" id="date">
+    <label for="location">location</label>
+    <input type="text" name="location" id="location">
+    <input type="submit" value="submit">
 </form>
 
 {% endblock %}
