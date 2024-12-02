@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'teams.apps.TeamsConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'events.apps.EventsConfig',
 ]
 
 
