@@ -7,41 +7,43 @@ import time
 import random
 import sqlite3
 import shutil
+from users.models import User
 
 DB_SU = "db_su.sqlite3"
 DB_SIM = "db_sim.sqlite3"
 
 # -- CHECKS --
 
-# Check if db_su.sqlite3 exists
-if not os.path.isfile(DB_SU):
-    print("db with superuser only, does not exists")
-    print(f"please create {DB_SU}")
-    exit(1)
+def checks():
+    # Check if db_su.sqlite3 exists
+    if not os.path.isfile(DB_SU):
+        print("db with superuser only, does not exists")
+        print(f"please create {DB_SU}")
+        exit(1)
 
-# Reset database
-if os.path.isfile(DB_SIM):
-    os.remove(DB_SIM)
-shutil.copy(DB_SU, DB_SIM)
+    # Reset database
+    if os.path.isfile(DB_SIM):
+        os.remove(DB_SIM)
+    shutil.copy(DB_SU, DB_SIM)
 
-# Check if requirements-sim.txt exists
-if not os.path.isfile("requirements-sim.txt"):
-    print("requirements-sim.txt missing")
-    exit(1)
+    # Check if requirements-sim.txt exists
+    if not os.path.isfile("requirements-sim.txt"):
+        print("requirements-sim.txt missing")
+        exit(1)
 
-# If directory venv does not exists, then exit
-if not os.path.isdir("venv"):
-    help = """
-You do not have any venv directory, please run following (cut and paste)
+    # If directory venv does not exists, then exit
+    if not os.path.isdir("venv"):
+        help = """
+    You do not have any venv directory, please run following (cut and paste)
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements-sim.txt
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements-sim.txt
 
-And then run this script again!
-"""
-    print(help)
-    exit(1)
+    And then run this script again!
+    """
+        print(help)
+        exit(1)
 
 # -- GENERATE FAKE USERS --
 
@@ -90,6 +92,25 @@ def insert_members():
         first_name, last_name = name.split(" ")
         username = f"{first_name.lower()}.{last_name.lower()}"
         email = info["email"]
+        date_joined = info["joined"]
+        password = "p@ssw0rd1"
+        
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            date_joined=date_joined
+        )
+        user.set_password(password)
+        user.save()
+
+# Remove this function
+def insert_members_old():
+    for name, info in members.items():
+        first_name, last_name = name.split(" ")
+        username = f"{first_name.lower()}.{last_name.lower()}"
+        email = info["email"]
         date_joined = a_year_ago + random.randint(0,300)*24*60*60
         password = "p@ssw0rd1"
         
@@ -105,4 +126,5 @@ def insert_members():
 # MAIN
 
 if __name__ == "__main__":
+    checks()
     insert_members()
