@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'public_pages.apps.PublicPagesConfig',
     'teams.apps.TeamsConfig',
+    'events.apps.EventsConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    'events.apps.EventsConfig',
 ]
 
 
