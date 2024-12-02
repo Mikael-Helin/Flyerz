@@ -9,6 +9,8 @@ N = 10
 
 def create_email(first_name, last_name):
     org_name = fake.company()
+    if org_name[-1] == ",":
+        org_name = org_name[:-1]
     domain_name = org_name.split(" ")[0] + ".com"
     email = f"{first_name.lower()}.{last_name.lower()}@{domain_name}"
     return email
