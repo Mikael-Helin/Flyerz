@@ -8,7 +8,7 @@ class UserRegistrationForm(UserCreationForm):
     username = forms.CharField(
         validators=[
             MinLengthValidator(
-                3, 
+                3,
                 message='Your username must contain at least 3 characters.'
             ),
         ],
@@ -21,22 +21,19 @@ class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(
         label='Email',
         widget=forms.EmailInput(attrs={'placeholder': 'Enter your email address.'}),
-        help_text='Enter your email address.',
     )
 
     password1 = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password.'}),
-        help_text='Your password must contain at least 8 characters.',
         error_messages={
-            'min_length': 'Ensure this value has at least 8 characters.'
+            'min_length': 'Your password must contain at least 8 characters.'
         },
     )
 
     password2 = forms.CharField(
         label='Password confirmation',
         widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password again.'}),
-        help_text='Enter the same password as before, for verification.',
         error_messages={
             'min_length': 'Ensure this value has at least 8 characters.'
         },

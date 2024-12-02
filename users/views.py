@@ -5,6 +5,7 @@ from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def profile(request):
     user_details = User
@@ -43,3 +44,9 @@ def edit_profile(request):
 class DeleteUserView(DeleteView):
     model = User
     success_url = '/'
+
+    def delete(self, request, *args, **kwargs):
+        print("DeleteUserView accessed")
+        logout(request)
+        messages.success(request, "Your account has been deleted successfully.")
+        return super().delete(request, *args, **kwargs)

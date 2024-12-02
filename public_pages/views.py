@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
 def landingpage(request):
-    return render(request, 'public_pages/landingpage.html', {})
+    return render(request, 'public_pages/landingpage.html', {'user': request.user})
