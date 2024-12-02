@@ -10,7 +10,6 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-
                         {% for field in user_form %}
                         <div class="mb-4">
                             <label for="{{ field.id_for_label }}" class="form-label">
@@ -28,6 +27,18 @@
                             </div>
                         </div>
                         {% endfor %}
+
+                        <!-- Profile Picture -->
+                        <div class="col-md-12 text-center">
+                            {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
+                                class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                            {% else %}
+                            <img src="" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3"
+                                style="max-width: 150px;">
+                            {% endif %}
+
+                        </div>
 
                         <!-- Form Buttons -->
                         <div class="d-grid gap-2">
