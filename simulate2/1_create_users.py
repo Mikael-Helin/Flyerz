@@ -8,6 +8,7 @@ import time
 import random
 import sqlite3
 import shutil
+import datetime
 
 sys.path.append('/home/mikael/DEVELOPMENT/Flyerz')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flyerz.settings')
