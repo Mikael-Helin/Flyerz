@@ -8,8 +8,7 @@ fake = Faker()
 N = 10
 
 def create_email(first_name, last_name):
-    org_name = fake.company()
-    domain_name = org_name.split(" ")[0] + ".com"
+    domain_name = fake.domain_name()
     email = f"{first_name.lower()}.{last_name.lower()}@{domain_name}"
     return email
 
