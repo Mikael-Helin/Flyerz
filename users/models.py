@@ -6,6 +6,12 @@ from django.core.exceptions import ValidationError
 class User(AbstractUser):
     friends = models.ManyToManyField("self", symmetrical=False)
     email = models.EmailField(unique=True)
+    # Add file field
+    profile_picture = models.ImageField(
+        upload_to= "static/",
+        blank=True,
+        null=True
+    )
 
 # ADDED BY MIKAEL
 class Friend(models.Model):
