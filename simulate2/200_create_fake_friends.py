@@ -11,22 +11,23 @@ for user in User.objects.all():
 
 no_users = len(users)
 
-if no_users > 1:
-    for i, user in enumerate(users):
-        while True:
-            other = random.choice(users)
-            if other != user:
-                break
-        # TODO
-        friend = Friend(
-            user_1 = user,
-            user_2 = other,
-        ) 
-        try:
-            friend.save()
-        except:
-            pass
+if no_users < 2:
+    print("Only 1 user")
+    exit(1)
 
+for user1 in users:
+    while True:
+        user2 = random.choice(users)
+        if user1.id != user2.id:
+            break
+    friend = Friend(
+        user_1 = user1,
+        user_2 = user2,
+    ) 
+    try:
+        friend.save()
+    except:
+        print(f"Unique {user1.id} <-> {user2.id} error")
 
 
 
