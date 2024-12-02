@@ -2,19 +2,31 @@
 
 import os
 import sys
+import django
 from faker import Faker
 import time
 import random
 import sqlite3
 import shutil
-from users.models import User
-import django
+
+sys.path.append('/home/mikael/DEVELOPMENT/Flyerz')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flyerz.settings')
+django.setup()
 
 DB_SU = "db_su.sqlite3"
 DB_SIM = "db_sim.sqlite3"
 
+print("PYTHON PATH BEFORE APPENDING PROJECT ROOT:", sys.path)
+
+sys.path.append('/home/mikael/DEVELOPMENT/Flyerz')
+sys.path.append('/home/mikael/DEVELOPMENT/Flyerz/flyerz')
+
+print("DJANGO SETTINGS MODULE:", os.environ.get('DJANGO_SETTINGS_MODULE'))
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flyerz.settings')  # Replace 'flyerz' with your project name if different
 django.setup()
+
+from users.models import User
 
 # -- CHECKS --
 
@@ -52,11 +64,6 @@ def checks():
 # -- GENERATE FAKE USERS --
 
 fake = Faker()
-
-# Connect to the SQLite database
-db_path = "db_sim.sqlite3"  # Update the path if necessary
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
 
 # N is amount of person you want to simulate
 N = 1000
@@ -96,7 +103,7 @@ def insert_members():
         first_name, last_name = name.split(" ")
         username = f"{first_name.lower()}.{last_name.lower()}"
         email = info["email"]
-        date_joined = info["joined"]
+        date_joined = datetime.fromtimestamp(info["joined"])  # Convert timestamp to datetime
         password = "p@ssw0rd1"
         
         user = User.objects.create_user(
