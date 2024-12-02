@@ -16,14 +16,14 @@ class User(AbstractUser):
 # ADDED BY MIKAEL
 class Friend(models.Model):
     user_1 = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
         related_name='friendships_as_user_1'
     )
     accepted_time_1 = models.DateTimeField(null=True, blank=True)
 
     user_2 = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
         related_name='friendships_as_user_2'
     )
