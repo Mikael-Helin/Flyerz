@@ -13,16 +13,10 @@ DB_SIM = "db_sim.sqlite3"
 
 # -- CHECKS --
 
-# Check if db_su.sqlite3 exists
-if not os.path.isfile(DB2):
-    print("db with friends table does not exists")
-    print(f"please create {DB2}")
+# Check if DB_SIM exists
+if not os.path.isfile(DB_SIM):
+    print(f"please create {DB_SIM}")
     exit(1)
-
-# Reset database
-if os.path.isfile(DB_SIM):
-    os.remove(DB_SIM)
-shutil.copy(DB2, DB_SIM)
 
 # Check if requirements-sim.txt exists
 if not os.path.isfile("requirements-sim.txt"):
