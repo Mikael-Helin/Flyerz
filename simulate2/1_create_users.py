@@ -68,7 +68,7 @@ def checks():
 fake = Faker()
 
 # N is amount of person you want to simulate
-N = 100
+N = 10
 if len(sys.argv) > 1:
     N = int(sys.argv[1])
 
