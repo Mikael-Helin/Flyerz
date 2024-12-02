@@ -9,12 +9,13 @@ import random
 import sqlite3
 import shutil
 import datetime
+from django.utils import timezone
 
 sys.path.append('/home/mikael/DEVELOPMENT/Flyerz')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flyerz.settings')
 django.setup()
 
-DB_SU = "db_su.sqlite3"
+DB_SU = "simulate2/db_su.sqlite3"
 DB_SIM = "db_sim.sqlite3"
 
 print("PYTHON PATH BEFORE APPENDING PROJECT ROOT:", sys.path)
@@ -44,7 +45,7 @@ def checks():
     shutil.copy(DB_SU, DB_SIM)
 
     # Check if requirements-sim.txt exists
-    if not os.path.isfile("requirements-sim.txt"):
+    if not os.path.isfile("simulate2/requirements-sim.txt"):
         print("requirements-sim.txt missing")
         exit(1)
 
@@ -67,7 +68,7 @@ def checks():
 fake = Faker()
 
 # N is amount of person you want to simulate
-N = 1000
+N = 100
 if len(sys.argv) > 1:
     N = int(sys.argv[1])
 
@@ -82,7 +83,7 @@ for _ in range(N):
     name = f"{first_name} {last_name}"
     members[name] = { 
         "username": f"{first_name.lower()}.{last_name.lower()}",
-        "joined": a_year_ago + random.randint(0,300)*365*24*60*60    
+        "joined": a_year_ago + random.randint(0,300)*24*60*60    
     }
 
 # Create workplace, email, and event address to the members
@@ -99,44 +100,59 @@ for name in members.keys():
 
 # Populate the database with members
 # username, email, first name, last name
+
+from django.utils.timezone import make_aware
+from django.contrib.auth.hashers import make_password
 def insert_members():
+    users = []
     for name, info in members.items():
         first_name, last_name = name.split(" ")
-        username = f"{first_name.lower()}.{last_name.lower()}"
+        username = info["username"]
         email = info["email"]
-        date_joined = datetime.fromtimestamp(info["joined"])  # Convert timestamp to datetime
-        password = "p@ssw0rd1"
+        # Make the datetime timezone-aware
+        date_joined = make_aware(datetime.datetime.fromtimestamp(info["joined"]))
+        password = "sldkfjghery987_cnkj3477"
+        #password = make_password("p@ssw0rd1")  # Pre-hash the password
         
-        user = User.objects.create_user(
+        user = User(
             username=username,
             email=email,
             first_name=first_name,
             last_name=last_name,
-            date_joined=date_joined
+            date_joined=date_joined,
+            password=password
         )
-        user.set_password(password)
-        user.save()
+        users.append(user)
+    
+    # Bulk create all users at once
+    User.objects.bulk_create(users)
 
-# Remove this function
 def insert_members_old():
+    users = []
     for name, info in members.items():
         first_name, last_name = name.split(" ")
-        username = f"{first_name.lower()}.{last_name.lower()}"
+        username = info["username"]
         email = info["email"]
-        date_joined = a_year_ago + random.randint(0,300)*24*60*60
-        password = "p@ssw0rd1"
+        date_joined = datetime.datetime.fromtimestamp(info["joined"], tz=timezone.utc)
+        password = make_password("p@ssw0rd1")  # Pre-hash the password
         
-        cursor.execute("""
-            INSERT INTO users_user (
-                password, last_login, is_superuser, username, first_name, last_name,
-                is_staff, is_active, date_joined, email
-            ) VALUES (?, NULL, 0, ?, ?, ?, 0, 1, ?, ?)
-        """, (password, username, first_name, last_name, date_joined, email))
-
-    conn.commit()
+        user = User(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            date_joined=date_joined,
+            password=password
+        )
+        users.append(user)
+    
+    # Bulk create all users at once
+    User.objects.bulk_create(users)
 
 # MAIN
 
 if __name__ == "__main__":
     checks()
     insert_members()
+
+
