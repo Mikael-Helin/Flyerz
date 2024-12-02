@@ -8,7 +8,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     # Add file field
     profile_picture = models.ImageField(
-        upload_to= "static/",
+        upload_to= "profile_pics",
         blank=True,
         null=True
     )
