@@ -1,3 +1,7 @@
+#
+# $ python manage.py shell < seed.py
+#
+
 from faker import Faker
 from users.models import User
 import random
