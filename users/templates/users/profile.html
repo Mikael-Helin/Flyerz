@@ -12,7 +12,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <a href="" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-calendar-alt me-2 text-orange"></i> Events
                         </a>
                     </li>
@@ -28,7 +28,7 @@
                     </li>
                     <li class="list-group-item">
                         <a href="{% url 'users:change_password' %}" class="nav-link">
-                            <i class="fas fa-key me-2 text-orange"></i></i> Change Pasword
+                            <i class="fas fa-key me-2 text-orange"></i> Change Password
                         </a>
                     </li>
                 </ul>
@@ -46,17 +46,16 @@
                     <div class="row">
                         <!-- Profile Picture -->
                         <div class="col-md-4 text-center">
-                            <img src="" alt="Profile Picture" class="img-fluid rounded-circle mb-3"
+                            {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
+                                class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                            {% else %}
+                            <img src="" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3"
                                 style="max-width: 150px;">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input type="file" name="picture" placeholder="form-control"
-                                        id="profilePictureInput" required>
-                                    <button type="submit" class="btn btn-outline-secondary">Upload</button>
-                                </div>
-                            </form>
+                            {% endif %}
+
                         </div>
+
                         <!-- User Details -->
                         <div class="col-md-8">
                             <h3>{{ user.get_full_name }}</h3>
@@ -66,31 +65,19 @@
                             <p><strong>Last Name:</strong> {{ user.last_name }}</p>
                             <p><strong>Is Active:</strong>
                                 <span class="badge 
-                                    {% if user.is_active %}
-                                        bg-success
-                                    {% else %}
-                                        bg-danger
-                                    {% endif %}">
+                                    {% if user.is_active %} bg-success {% else %} bg-danger {% endif %}">
                                     {{ user.is_active|yesno:"Yes,No" }}
                                 </span>
                             </p>
                             <p><strong>Is Staff:</strong>
                                 <span class="badge 
-                                    {% if user.is_staff %}
-                                        bg-success
-                                    {% else %}
-                                        bg-danger
-                                    {% endif %}">
+                                    {% if user.is_staff %} bg-success {% else %} bg-danger {% endif %}">
                                     {{ user.is_staff|yesno:"Yes,No" }}
                                 </span>
                             </p>
                             <p><strong>Is Superuser:</strong>
                                 <span class="badge 
-                                    {% if user.is_superuser %}
-                                        bg-success
-                                    {% else %}
-                                        bg-danger
-                                    {% endif %}">
+                                    {% if user.is_superuser %} bg-success {% else %} bg-danger {% endif %}">
                                     {{ user.is_superuser|yesno:"Yes,No" }}
                                 </span>
                             </p>
@@ -118,10 +105,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Optional JavaScript for better user experience -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+rmVN1g7F2KGXQ6+vmIK7lNPt8M1w"
-        crossorigin="anonymous"></script>
 </div>
 {% endblock %}

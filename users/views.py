@@ -28,7 +28,7 @@ def signup(request):
 def edit_profile(request):
     if 'action' in request.POST:
         if request.POST['action'] == 'save':
-            user_form = UserUpdateForm(request.POST, instance=request.user)
+            user_form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
             if user_form.is_valid():
                 user_form.save()
                 messages.success(request, "Your profile has been updated successfully.")
