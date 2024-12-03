@@ -10,14 +10,22 @@ from django.db.models import Q
 
 def search(request):
     query = request.GET.get("q")
-    if not query:
-        users = []
+
+    if request.user:
+        friends = request.user.friends.all() 
     else:
-        users = User.objects.filter(
+        friends = []
+
+    if not query:
+        search_result = []
+    else:
+        search_result = User.objects.filter(
                 Q(username__icontains=query)
             )
+
     return render(request, 'users/search.html', {
-        "user_list": users
+        "search_result": search_result,
+        "friends": friends,
     })
 
 def profile(request):

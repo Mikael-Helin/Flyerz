@@ -2,10 +2,20 @@
   <input name="q" type="text" placeholder="Search...">
 </form>
 
+<h1>Friends</h1>
+
+<ul>
+  {% for user in friends %}
+    <li>
+      {{ user.username }}    
+    </li>
+  {% endfor %}
+</ul>
+
 <h1>Search Results</h1>
 
 <ul>
-  {% for user in user_list %}
+  {% for user in search_result %}
     <li>
       {{ user.username }}    
     </li>
