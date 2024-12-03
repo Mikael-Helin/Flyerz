@@ -1,0 +1,13 @@
+<form action="{% url 'users:search' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+<h1>Search Results</h1>
+
+<ul>
+  {% for user in user_list %}
+    <li>
+      {{ user.username }}    
+    </li>
+  {% endfor %}
+</ul>

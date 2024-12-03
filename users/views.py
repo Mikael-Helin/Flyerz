@@ -6,6 +6,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get("q")
+    if not query:
+        users = []
+    else:
+        users = User.objects.filter(
+                Q(username__icontains=query)
+            )
+    return render(request, 'users/search.html', {
+        "user_list": users
+    })
 
 def profile(request):
     user_details = User

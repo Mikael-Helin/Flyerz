@@ -3,6 +3,9 @@ from .models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.validators import MinLengthValidator # https://docs.djangoproject.com/en/5.1/ref/validators/#built-in-validators
 
+class SearchForm(forms.Form):
+    pass
+
 class UserRegistrationForm(UserCreationForm):
 
     username = forms.CharField(
