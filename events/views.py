@@ -2,38 +2,43 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import render, redirect
 from .forms import EventForm
 from .models import Event
 
 # Create your views here.
+def event(request):
+    event_details = Event
+    return render(request, 'events/event.html', {event_details: event_details})
+
+def event_list(request):
+    sort_by = request.GET.get('sort_by', 'date')
+    events = Event.objects.all().order_by(sort_by)
+    return render(request, 'events/eventlist.html', {'events': events})
+
+
+def event_details(request, event_id):
+    event = Event.objects.get(id=event_id)
+    return render(request, 'events/event_details.html', {'event': event})
+
 def add_event(request):
     if request.method == 'POST':
         event_form = EventForm(request.POST)
         event_form.instance.organizer = request.user
 
-        print('USER', request.user)
-
         if event_form.is_valid():
-            new_event = event_form.save()
+            event_form.save()
+            return redirect('events:event_details', event_id=event_form.instance.id)
 
-            events = Event.objects.filter(organizer=request.user)
-
-            return render(request, 'events/user_events.html', {'events': events})
     else:
         event_form = EventForm()
         print("GET request received")
-    events = Event.objects.filter(organizer=request.user)
     return render(request, 'events/add_event.html', {'event_form': event_form})
 
 
 def user_events(request):
     events = Event.objects.filter(organizer=request.user)
     return render(request, 'events/user_events.html', {'events': events})
-
-
-def event_list(request):
-    events = Event.objects.all()
-    return render(request, 'events/eventlist.html', {'events': events})
 
 
 @login_required
