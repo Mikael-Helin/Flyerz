@@ -1,28 +1,47 @@
 from django.shortcuts import render, redirect, reverse
 from users.models import User
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 def search(request):
     query = request.GET.get('query', '')
 
     users = []
+
     if query:
         users = User.objects.filter(
             Q(username__icontains=query)
         )
 
+    friends = []
+
+    if request.user.is_authenticated:
+        friends = request.user.friends.all()
+
     context = {
         "query": query,
         "users": users,
+        "friends": friends,
     }
 
     return render(request, "search/search.html", context)
 
+@login_required
 def add_friend(request):
+    param_query = request.POST.get('query', None)
+    param_friend_id = request.POST.get('friend_id', None)
+
+    if param_friend_id:
+        friend = User.objects.get(id=param_friend_id)
+        if friend:
+            friend.friends.add(request.user)
+            friend.save()
+
     url = reverse('search:search')
-    query = request.POST.get('query', '')
-    if query:
-        url = f'{url}?query={query}'
+
+    if param_query:
+        url = f'{url}?query={param_query}'
+
     return redirect(url)
 
 # Create your views here.

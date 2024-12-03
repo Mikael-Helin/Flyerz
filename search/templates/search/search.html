@@ -8,6 +8,7 @@
 	{% for user in users %}
 	{{ user.username }}
 	{% if request.user.is_authenticated %}
+	{% if user not in friends %}
 	<form action="{% url 'search:add_friend' %}" method="POST">
 		{% csrf_token %}
 		<input type="hidden" name="friend_id" value="{{ user.id }}">
@@ -15,6 +16,8 @@
 		<button type="submit">Add friend</button>
 	</form>
 	{% endif %}
+	{% endif %}
+	<br />
 	{% endfor %}
 	{% else %}
 	<p>No users found</p>
