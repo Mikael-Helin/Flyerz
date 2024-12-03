@@ -20,7 +20,8 @@ def event_list(request):
 def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     comments = event.comments.all()
-    user_attending = event.attendees.all()
+    user_attending = EventAttendance.objects.filter(event=event, attendee=request.user).exists()
+
 
     if request.method == 'POST' and 'attend' in request.POST:
         if user_attending:

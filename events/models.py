@@ -62,7 +62,6 @@ class EventAttendance(models.Model):
         on_delete=models.CASCADE,
         related_name='attended_events'
     )
-    amount_of_guests = IntegerField(default=0) #https://docs.djangoproject.com/en/5.1/intro/tutorial04/
 
     class Meta:
         constraints = [
