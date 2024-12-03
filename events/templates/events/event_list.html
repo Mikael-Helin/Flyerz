@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Events</h1>
+            <ul>
+                {% for event in event_list %}
+                    <li>
+                        {{ event.title }}
+                        <a href="{% url 'events:event_details' event.id %}">View</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
