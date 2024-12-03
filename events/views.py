@@ -11,6 +11,7 @@ def event(request):
     event_details = Event
     return render(request, 'events/event.html', {event_details: event_details})
 
+
 def event_list(request):
     sort_by = request.GET.get('sort_by', 'date')
     events = Event.objects.all().order_by(sort_by)
@@ -46,7 +47,7 @@ def user_events(request):
 def edit_event(request, event_id):
     event = get_object_or_404(Event, id=event_id, organizer=request.user)
     if request.method == 'POST':
-        form = EventForm(request.POST, instance=event)
+        form = EventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
             form.save()
             return redirect('events:user_events')

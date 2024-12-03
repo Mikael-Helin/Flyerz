@@ -1,20 +1,43 @@
 {% extends "base.html" %}
-{% block head %}
-{% endblock %}
-{% block body %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>{{ event.title }}</h1>
-            <img src="{{ event.event_flyer.url }}" alt="Event picture" class="img-fluid mb-3"
-                style="max-width: 300px;">>
-            <p><strong>Description:</strong> {{ event.description }}</p>
-            <p><strong>Date:</strong> {{ event.date }}</p>
-            <p><strong>Location:</strong> {{ event.location }}</p>
-            <p><strong>Organizer:</strong> <a href="{% url 'users:profile' %}">{{ event.organizer }}</a></p>
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-4">
+            <!-- Event Header -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white text-center">
+                    <h2 class="mb-0">{{ event.title }}</h2>
+                </div>
+                <div class="card-body">
+
+                    <!-- Event Flyer -->
+                    {% if event.event_flyer %}
+                    <img src="{{ event.event_flyer.url }}" alt="Event Flyer" class="img-fluid mb-3 rounded"
+                        style="max-height: 300px; object-fit: cover;">
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light border mb-3"
+                        style="height: 200px;">
+                        <span class="text-muted">No Flyer Available</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Event Description -->
+                    <p><strong>Description:</strong> {{ event.description }}</p>
+
+                    <!-- Event Details -->
+                    <p><strong>Date:</strong> {{ event.date|date:"F d, Y H:i" }}</p>
+                    <p><strong>Location:</strong> {{ event.location }}</p>
+                    <p><strong>Organizer:</strong> <a
+                            href="{% url 'users:profile' %}">{{ event.organizer.username }}</a></p>
+                </div>
+
+                <!-- Card Footer -->
+                <div class="card-footer text-center">
+                    <a href="{% url 'events:event_list' %}" class="btn view-button btn-sm shadow">Back to Events</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

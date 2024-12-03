@@ -4,26 +4,49 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         {% if events %}
-        <!-- Display all events created by any user -->
+        <!-- Header -->
+        <h2 class="text-center mb-5">Browse All Events</h2>
         {% for event in events %}
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <!-- Card Header -->
+                <div class="card-header bg-dark text-white text-center">
                     <h5 class="mb-0">{{ event.title }}</h5>
                 </div>
-                <div class="card-body">
-                    <p><strong>Description:</strong> {{ event.description }}</p>
-                    <p><strong>Date:</strong> {{ event.date }}</p>
+
+                <!-- Card Body -->
+                <div class="card-body d-flex flex-column">
+                    <!-- Event Flyer -->
+                    {% if event.event_flyer %}
+                    <img src="{{ event.event_flyer.url }}" alt="Event Flyer" class="img-fluid mb-3 rounded"
+                        style="max-height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light border mb-3"
+                        style="height: 200px;">
+                        <span class="text-muted">No Flyer Available</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Event Details -->
+                    <p><strong>Description:</strong> {{ event.description|truncatewords:20 }}</p>
+                    <p><strong>Date:</strong> {{ event.date|date:"F d, Y H:i" }}</p>
                     <p><strong>Location:</strong> {{ event.location }}</p>
                     <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
+                </div>
+
+                <!-- Card Footer -->
+                <div class="card-footer text-center">
+                    <a href="{% url 'events:event_details' event.id %}" class="btn view-button btn-sm w-100">View
+                        Details</a>
                 </div>
             </div>
         </div>
         {% endfor %}
         {% else %}
         <!-- If no events exist -->
-        <div class="alert alert-info" role="alert">
-            No events have been created yet.
+        <div class="alert alert-info text-center" role="alert">
+            <p class="mb-3">No events are currently available. Be the first to add one!</p>
+            <a href="{% url 'events:add_event' %}" class="btn btn-primary btn-lg shadow">Create Event</a>
         </div>
         {% endif %}
     </div>

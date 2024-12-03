@@ -9,8 +9,17 @@
                     <h3 class="mb-0">Edit Event</h3>
                 </div>
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
+
+                        <!-- Display Current Image -->
+                        {% if form.instance.event_flyer %}
+                        <div class="mb-4 text-center">
+                            <img src="{{ form.instance.event_flyer.url }}" alt="Current Flyer"
+                                class="img-fluid mb-2 rounded" style="max-height: 200px;">
+                            <p class="text-muted">Current Flyer</p>
+                        </div>
+                        {% endif %}
 
                         <!-- Render form fields -->
                         {% for field in form %}
