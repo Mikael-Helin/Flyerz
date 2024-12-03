@@ -12,6 +12,10 @@ class User(AbstractUser):
         null=True
     )
 
+#
+# TODO
+#
+
 # class FriendRequest(models.Model):
 #     from_user = models.ForeignKey(
 #         User,
