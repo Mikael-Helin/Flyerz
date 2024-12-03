@@ -4,7 +4,7 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         {% if events %}
-        <!-- Display all events created by any user -->
+        <!-- Display all events created by the user -->
         {% for event in events %}
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
@@ -17,13 +17,20 @@
                     <p><strong>Location:</strong> {{ event.location }}</p>
                     <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
                 </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'events:edit_event' event.id %}" class="btn btn-warning w-25 me-2">Edit</a>
+                    <a href="{% url 'events:delete_event' event.id %}" class="btn btn-danger w-25">Delete</a>
+                </div>
             </div>
         </div>
         {% endfor %}
         {% else %}
         <!-- If no events exist -->
         <div class="alert alert-info" role="alert">
-            No events have been created yet.
+            You haven't created any events yet. Start by adding one!
+        </div>
+        <div class="text-center">
+            <a href="{% url 'events:add_event' %}" class="btn custom-btn btn-lg shadow">Create Event</a>
         </div>
         {% endif %}
     </div>

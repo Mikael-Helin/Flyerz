@@ -1,20 +1,52 @@
 {% extends "base.html" %}
-{% block head %}
-{% endblock %}
+{% load static %}
+
 {% block body %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <!-- Main Content Column -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0 text-center">Create New Event</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Event Form -->
+                    <form method="post" class="p-4 rounded">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Event Title:</label>
+                            <input type="text" name="title" id="title" class="form-control"
+                                placeholder="Enter event title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:</label>
+                            <textarea name="description" id="description" class="form-control" rows="4"
+                                placeholder="Enter event description" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Event Date:</label>
+                            <input type="date" name="date" id="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location:</label>
+                            <input type="text" name="location" id="location" class="form-control"
+                                placeholder="Enter event location" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="fas fa-check-circle me-2"></i> Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-HEJ!
-<form method="post">
-    {% csrf_token %}
-    <label for="title">title:</label>
-    <input type="text" name="title" id="title">
-    <label for="description">description</label>
-    <input type="text" name="description" id="description">
-    <label for="date">date</label>
-    <input type="date" name="date" id="date">
-    <label for="location">location</label>
-    <input type="text" name="location" id="location">
-    <input type="submit" value="submit">
-</form>
-
+    <!-- Optional JavaScript for better user experience -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+rmVN1g7F2KGXQ6+vmIK7lNPt8M1w"
+        crossorigin="anonymous"></script>
+</div>
 {% endblock %}

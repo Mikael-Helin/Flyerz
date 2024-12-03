@@ -163,6 +163,18 @@ footer .contributor a:hover {
     color: #1a1a1a; 
 }
 
+.orange-border {
+    border: 2px solid #eb6e00; 
+}
+
+/* Custom Divider */
+.custom-divider {
+    height: 50px;
+    background: linear-gradient(to right, orange, transparent);
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
+}
+
+
 @media (max-width: 768px) {
     .carousel-caption {
         font-size: 0.9rem;
