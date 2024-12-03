@@ -16,6 +16,7 @@
             <p><strong>Location:</strong> {{ event.location }}</p>
             <p><strong>Organizer:</strong> <a href="{% url 'users:profile' %}">{{ event.organizer }}</a></p>
 
+            <p>ATTENDIS: {{ amount_of_guests }}</p>
             <h3>Attend</h3>
             {% if request.user.is_authenticated %}
                 {% if user_attending %}
