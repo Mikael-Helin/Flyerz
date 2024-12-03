@@ -2,7 +2,21 @@
 {% load static %}
 
 {% block body %}
-<div class="container-fluid min-vh-100 bg-dark">
-	<h1>SEARCH</h1>
+<div class="container-fluid min-vh-100 bg-light">
+	<h1>Users</h1>
+	{% if users %}
+	{% for user in users %}
+	{{ user.username }}
+	{% if request.user.is_authenticated %}
+	<form action="{% url 'search:add_friend' %}" method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="friend_id" value="{{ user.id }}">
+		<button type="submit">Add friend</button>
+	</form>
+	{% endif %}
+	{% endfor %}
+	{% else %}
+	<p>No users found</p>
+	{% endif %}
 </div>
 {% endblock %}
