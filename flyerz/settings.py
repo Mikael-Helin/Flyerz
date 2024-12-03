@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'public_pages.apps.PublicPagesConfig',
     'teams.apps.TeamsConfig',
+    'events.apps.EventsConfig',
     'search.apps.SearchConfig',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -133,6 +134,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 STATIC_URL = 'static/'
 #

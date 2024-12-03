@@ -41,6 +41,9 @@
                     <li class="nav-item">
                         <a class="nav-link me-3" aria-current="page" href="{% url 'landingpage' %}">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-3" aria-current="page" href="{% url 'events:event_list' %}">Events</a>
+                    </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item me-3">
                         <form action="{% url 'logout' %}" method="POST">

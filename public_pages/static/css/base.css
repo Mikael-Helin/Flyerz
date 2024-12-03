@@ -163,6 +163,32 @@ footer .contributor a:hover {
     color: #1a1a1a; 
 }
 
+.orange-border {
+    border: 2px solid #eb6e00; 
+}
+
+.view-button {
+    background-color: #eb6e00;
+    color: white;
+    font-weight: 700;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+.view-button:hover {
+    color: black !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Divider */
+.custom-divider {
+    height: 50px;
+    background: linear-gradient(to right, orange, transparent);
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 100%);
+}
+
+
 @media (max-width: 768px) {
     .carousel-caption {
         font-size: 0.9rem;

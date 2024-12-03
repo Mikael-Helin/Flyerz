@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white text-center">
+                    <h3 class="mb-0">Delete Event</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-center">Are you sure you want to delete this event?</h5>
+                    <p class="text-muted text-center">{{ event.title }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- Form Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-2"></i> Yes, Delete
+                            </button>
+                            <a href="{% url 'events:user_events' %}" class="btn btn-outline-dark">
+                                <i class="fas fa-times me-2"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
