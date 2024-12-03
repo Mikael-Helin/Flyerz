@@ -44,4 +44,22 @@ def add_friend(request):
 
     return redirect(url)
 
+@login_required
+def remove_friend(request):
+    param_query = request.POST.get('query', None)
+    param_friend_id = request.POST.get('friend_id', None)
+
+    if param_friend_id:
+        friend = User.objects.get(id=param_friend_id)
+        if friend:
+            friend.friends.remove(request.user)
+            friend.save()
+
+    url = reverse('search:search')
+
+    if param_query:
+        url = f'{url}?query={param_query}'
+
+    return redirect(url)
+
 # Create your views here.
