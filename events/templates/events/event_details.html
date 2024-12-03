@@ -7,6 +7,8 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{ event.title }}</h1>
+            <img src="{{ event.event_flyer.url }}" alt="Event picture" class="img-fluid mb-3"
+                style="max-width: 300px;">>
             <p><strong>Description:</strong> {{ event.description }}</p>
             <p><strong>Date:</strong> {{ event.date }}</p>
             <p><strong>Location:</strong> {{ event.location }}</p>
@@ -14,5 +16,5 @@
         </div>
     </div>
 </div>
-        
+
 {% endblock %}

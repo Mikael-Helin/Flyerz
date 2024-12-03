@@ -21,9 +21,10 @@ def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     return render(request, 'events/event_details.html', {'event': event})
 
+
 def add_event(request):
     if request.method == 'POST':
-        event_form = EventForm(request.POST)
+        event_form = EventForm(request.POST, request.FILES)
         event_form.instance.organizer = request.user
 
         if event_form.is_valid():
