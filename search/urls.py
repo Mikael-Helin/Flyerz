@@ -5,5 +5,5 @@ from django.contrib.auth import views as auth_views
 app_name = "search"
 
 urlpatterns = [
-    path('search/', views.search, name='search'),
+    path('', views.search, name='search'),
 ]
