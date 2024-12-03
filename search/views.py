@@ -19,6 +19,10 @@ def search(request):
     return render(request, "search/search.html", context)
 
 def add_friend(request):
-    return redirect(reverse('search:search'))
+    url = reverse('search:search')
+    query = request.POST.get('query', '')
+    if query:
+        url = f'{url}?query={query}'
+    return redirect(url)
 
 # Create your views here.

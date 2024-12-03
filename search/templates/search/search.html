@@ -11,6 +11,7 @@
 	<form action="{% url 'search:add_friend' %}" method="POST">
 		{% csrf_token %}
 		<input type="hidden" name="friend_id" value="{{ user.id }}">
+		<input type="hidden" name="query" value="{{ query }}">
 		<button type="submit">Add friend</button>
 	</form>
 	{% endif %}
