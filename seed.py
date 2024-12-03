@@ -1,5 +1,5 @@
 from faker import Faker
-from users.models import User, Friend
+from users.models import User
 import random
 
 fake = Faker()
@@ -24,7 +24,10 @@ for i in range(NUM_USER):
         last_name=last_name,
     )
     user.set_password(DEFAULT_PASSWORD)
-    user.save()
+    try:
+        user.save()
+    except:
+        pass
 
 #
 # Seed Friend
@@ -46,11 +49,12 @@ for user1 in users:
             user2 = random.choice(users)
             if user1.id != user2.id:
                 break
-        friend = Friend(
-            user_1 = user1,
-            user_2 = user2,
-        ) 
-        try:
-            friend.save()
-        except:
-            pass
+        user1.friends.add(user2)
+        # friend = Friend(
+        #     user_1 = user1,
+        #     user_2 = user2,
+        # ) 
+        # try:
+        #     friend.save()
+        # except:
+        #     pass

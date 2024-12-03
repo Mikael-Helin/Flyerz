@@ -12,6 +12,22 @@ class User(AbstractUser):
         null=True
     )
 
+# class FriendRequest(models.Model):
+#     from_user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#     )
+#     to_user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#     )
+#     status_types = (
+#         (0, "pending"),
+#         (1, "accepted"),
+#         (2, "rejected"),
+#     )
+#     status = models.IntegerField(choices=status_types, default=0) 
+
 # ADDED BY MIKAEL
 # class FriendOld(models.Model):
 #     user_1 = models.ForeignKey(
