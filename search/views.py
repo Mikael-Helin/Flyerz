@@ -2,6 +2,10 @@ from django.shortcuts import HttpResponse, render
 
 
 def search(request):
-    return render(request, "search/search.html", {})
+    query = request.GET.get('query', '')
+    context = {
+        "query": query
+    }
+    return render(request, "search/search.html", context)
 
 # Create your views here.

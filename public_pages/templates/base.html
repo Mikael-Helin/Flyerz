@@ -35,7 +35,7 @@
                     <!-- Search Bar -->
                         <form class="d-flex me-4" role="search" method="GET"action="{% url 'search:search' %}">
                         <input class="form-control me-2 custom-search" type="search" placeholder="Search"
-                            aria-label="Search" name="query">
+                                aria-label="Search" name="query" value="{{ query|default:''}}">
                         <button class="btn btn-outline-light custom-search-btn" type="submit">Search</button>
                     </form>
                     <li class="nav-item">
