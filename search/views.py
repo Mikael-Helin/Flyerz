@@ -1,7 +1,7 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, reverse
 from users.models import User
-from django.db.models import Q
-from django.contrib.auth.decorators import login_required
 
 def search(request):
     query = request.GET.get('query', '')
