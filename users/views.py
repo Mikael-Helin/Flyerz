@@ -7,26 +7,38 @@ from django.contrib import messages
 from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.urls import reverse
 
 def search(request):
-    query = request.GET.get("q")
-
-    if request.user:
-        friends = request.user.friends.all() 
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            username = request.POST.get('username', None)
+            if username:
+                friend_maybe = User.objects.get(username=username)
+                if friend_maybe:
+                    request.user.friends.add(friend_maybe)
+        else:
+            print("no username")
+        return redirect(reverse('users:search'))
     else:
-        friends = []
+        query = request.GET.get("q")
 
-    if not query:
-        search_result = []
-    else:
-        search_result = User.objects.filter(
-                Q(username__icontains=query)
-            )
+        if request.user:
+            friends = request.user.friends.all() 
+        else:
+            friends = []
 
-    return render(request, 'users/search.html', {
-        "search_result": search_result,
-        "friends": friends,
-    })
+        if not query:
+            search_result = []
+        else:
+            search_result = User.objects.filter(
+                    Q(username__icontains=query)
+                )
+
+        return render(request, 'users/search.html', {
+            "search_result": search_result,
+            "friends": friends,
+        })
 
 def profile(request):
     user_details = User

@@ -1,23 +1,28 @@
 <form action="{% url 'users:search' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
+    <input name="q" type="text" placeholder="Search...">
 </form>
 
 <h1>Friends</h1>
 
 <ul>
-  {% for user in friends %}
+    {% for user in friends %}
     <li>
-      {{ user.username }}    
+        {{ user.username }}    
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
 
 <h1>Search Results</h1>
 
 <ul>
-  {% for user in search_result %}
+    {% for user in search_result %}
     <li>
-      {{ user.username }}    
+        {{ user.username }}    
+        <form action="{% url 'users:search' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="username" value="{{ user.username }}" />
+            <button type="submit" class="nav-link btn btn-link">ADD FRIEND</button>
+        </form>
     </li>
-  {% endfor %}
+    {% endfor %}
 </ul>
