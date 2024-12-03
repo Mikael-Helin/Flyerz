@@ -22,14 +22,36 @@
                     </div>
                     {% endif %}
 
-                    <!-- Event Description -->
+                    <!-- Event Description and Details -->
                     <p><strong>Description:</strong> {{ event.description }}</p>
-
-                    <!-- Event Details -->
                     <p><strong>Date:</strong> {{ event.date|date:"F d, Y H:i" }}</p>
                     <p><strong>Location:</strong> {{ event.location }}</p>
                     <p><strong>Organizer:</strong> <a
                             href="{% url 'users:profile' %}">{{ event.organizer.username }}</a></p>
+
+                    <!-- Attend Information -->
+                    <p><strong>Attending:</strong> {{ amount_of_guests }} guests</p>
+
+                    <h3>Attend</h3>
+                    {% if request.user.is_authenticated %}
+                    {% if user_attending %}
+                    <p>You are attending this event.</p>
+                    {% else %}
+                    <p>You are not attending this event.</p>
+                    {% endif %}
+                    {% else %}
+                    <p><a href="{% url 'login' %}">Log in</a> to attend this event.</p>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if user_attending %}
+                        <button type="submit" name="unattend" class="btn btn-danger">Unattend</button>
+                        {% else %}
+                        <button type="submit" name="attend" class="btn btn-success">Attend</button>
+                        {% endif %}
+                    </form>
+
                 </div>
 
                 <!-- Card Footer -->
@@ -38,60 +60,30 @@
                 </div>
             </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>{{ event.title }}</h1>
-            {% if event.event_flyer %}
-            <img src="{{ event.event_flyer.url }}" alt="Event picture" class="img-fluid mb-3"
-                style="max-width: 300px;">
-            {% endif %}
-            <p><strong>Description:</strong> {{ event.description }}</p>
-            <p><strong>Date:</strong> {{ event.date }}</p>
-            <p><strong>Location:</strong> {{ event.location }}</p>
-            <p><strong>Organizer:</strong> <a href="{% url 'users:profile' %}">{{ event.organizer }}</a></p>
-
-            <p>ATTENDIS: {{ amount_of_guests }}</p>
-            <h3>Attend</h3>
-            {% if request.user.is_authenticated %}
-                {% if user_attending %}
-                    <p>You are attending this event.</p>
-                {% else %}
-                    <p>You are not attending this event.</p>
-                {% endif %}
-            {% else %}
-                <p><a href="{% url 'login' %}">Log in</a> to attend this event.</p>
-            {% endif %}
-            <form method="post">
-                {% csrf_token %}
-                {% if user_attending %}
-                    <button type="submit" name="unattend">Unattend</button>
-                {% else %}
-                    <button type="submit" name="attend">Attend</button>
-                {% endif %}
-            </form>
-            
-
-            <h2>Comments</h2>
-            <ul>
-                {% for comment in comments %}
+            <!-- Comments Section -->
+            <div class="container mt-4">
+                <h2>Comments</h2>
+                <ul>
+                    {% for comment in comments %}
                     <li>
-                        <p><strong>{{ comment.author.username }}</strong> ({{ comment.created_at }}): </p>
-                       <p> {{ comment.content }}</p>
+                        <p><strong>{{ comment.author.username }}</strong> ({{ comment.created_at }}):</p>
+                        <p>{{ comment.content }}</p>
                     </li>
-                {% endfor %}
-            </ul>
+                    {% endfor %}
+                </ul>
 
-            {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                 <h3>Add a Comment</h3>
                 <form method="post">
                     {% csrf_token %}
                     {{ comment_form.as_p }}
-                    <button type="submit" name="comment">Submit</button>
+                    <button type="submit" name="comment" class="btn btn-primary">Submit</button>
                 </form>
-            {% else %}
+                {% else %}
                 <p><a href="{% url 'login' %}">Log in</a> to add a comment.</p>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
     </div>
 </div>
