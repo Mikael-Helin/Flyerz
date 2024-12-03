@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>HELLO</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ event.title }}</h1>
+            <p>{{ event.description }}</p>
+            <p>{{ event.date }}</p>
+            <p>{{ event.location }}</p>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}

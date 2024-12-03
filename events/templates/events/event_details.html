@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ event.title }}</h1>
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <p><strong>Date:</strong> {{ event.date }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Organizer:</strong> <a href="{% url 'users:profile' %}">{{ event.organizer }}</a></p>
+        </div>
+    </div>
+</div>
+        
+{% endblock %}

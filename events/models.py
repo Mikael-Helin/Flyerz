@@ -21,6 +21,7 @@ class Event(models.Model):
                 name='unique_event'
             )
         ]
+        ordering = ['date']
 
     def __str__(self) :
         return self.title + " by " + self.organizer.username
