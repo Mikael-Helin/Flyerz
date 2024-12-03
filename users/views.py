@@ -10,13 +10,15 @@ from django.db.models import Q
 from django.urls import reverse
 
 def search(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("NOT LOGGED IN")
+
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            username = request.POST.get('username', None)
-            if username:
-                friend_maybe = User.objects.get(username=username)
-                if friend_maybe:
-                    request.user.friends.add(friend_maybe)
+        username = request.POST.get('username', None)
+        if username:
+            friend_maybe = User.objects.get(username=username)
+            if friend_maybe:
+                request.user.friends.add(friend_maybe)
         else:
             print("no username")
         return redirect(reverse('users:search'))
