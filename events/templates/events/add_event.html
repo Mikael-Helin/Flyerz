@@ -5,19 +5,43 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <!-- Main Content Column -->
-        <div class="col-md-8">
+        <div class="col-md-6 col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0 text-center">Create New Event</h5>
+                <div class="card-header bg-dark text-white text-center">
+                    <h3 class="mb-0">Create New Event</h3>
                 </div>
                 <div class="card-body">
                     <!-- Event Form -->
-                    <form method="post" enctype="multipart/form-data" class="p-4 rounded">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ event_form.as_p }}
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-warning btn-lg">
-                                <i class="fas fa-check-circle me-2"></i> Submit
+
+                        <!-- Form Fields -->
+                        {% for field in event_form %}
+                        <div class="mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                            </label>
+                            <div class="form-group">
+                                {{ field }}
+                                {% if field.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+                        <!-- Form Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="action" value="save" class="btn btn-warning">
+                                <i class="fas fa-save me-2"></i> Save Event
+                            </button>
+                            <button type="submit" name="action" value="cancel" class="btn btn-outline-dark">
+                                <i class="fas fa-times me-2"></i> Cancel
                             </button>
                         </div>
                     </form>
@@ -25,10 +49,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Optional JavaScript for better user experience -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+rmVN1g7F2KGXQ6+vmIK7lNPt8M1w"
-        crossorigin="anonymous"></script>
 </div>
 {% endblock %}
