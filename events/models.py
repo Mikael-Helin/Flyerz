@@ -3,7 +3,7 @@ from users.models import User
 
 # Create your models here.
 class Event(models.Model):
-    title = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100)
     description = models.TextField()
     date = models.DateTimeField()
     location = models.CharField(max_length=250)
@@ -13,6 +13,12 @@ class Event(models.Model):
         related_name='events'
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    event_flyer = models.ImageField(
+        upload_to='event_flyerz',
+        blank=True,
+        null=True
+    )
 
     class Meta:
         constraints = [
