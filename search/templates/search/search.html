@@ -2,32 +2,54 @@
 {% load static %}
 
 {% block body %}
-<div class="container-fluid min-vh-100 bg-light">
-	<h1>Users</h1>
-	{% if users %}
-	{% for user in users %}
-	{{ user.username }}
-	{% if request.user.is_authenticated %}
-	{% if user not in friends %}
-	<form action="{% url 'search:add_friend' %}" method="POST">
-		{% csrf_token %}
-		<input type="hidden" name="friend_id" value="{{ user.id }}">
-		<input type="hidden" name="query" value="{{ query }}">
-		<button type="submit">Add friend</button>
-	</form>
-	{% else %}
-	<form action="{% url 'search:remove_friend' %}" method="POST">
-		{% csrf_token %}
-		<input type="hidden" name="friend_id" value="{{ user.id }}">
-		<input type="hidden" name="query" value="{{ query }}">
-		<button type="submit">Remove friend</button>
-	</form>
-	{% endif %}
-	{% endif %}
-	<br />
-	{% endfor %}
-	{% else %}
-	<p>No users found</p>
-	{% endif %}
+<div class="container-fluid min-vh-100 bg-light py-5">
+	<div class="container">
+		<h1 class="text-center mb-5">Users</h1>
+
+		{% if users %}
+		<div class="row">
+			{% for user in users %}
+			<div class="col-md-4 col-lg-3 mb-4">
+				<div class="card shadow-sm">
+					<div class="card-body text-center">
+						<!-- Profile Picture -->
+						{% if user.profile_picture %}
+						<img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s profile picture"
+							class="img-fluid rounded-circle mb-3"
+							style="width: 100px; height: 100px; object-fit: cover;">
+						{% else %}
+						<img src="{% static 'default-profile.jpg' %}" alt="Default profile picture"
+							class="img-fluid rounded-circle mb-3"
+							style="width: 100px; height: 100px; object-fit: cover;">
+						{% endif %}
+
+						<h4 class="card-title">{{ user.username }}</h5>
+
+							{% if request.user.is_authenticated %}
+							{% if user not in friends %}
+							<form action="{% url 'search:add_friend' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="friend_id" value="{{ user.id }}">
+								<input type="hidden" name="query" value="{{ query }}">
+								<button type="submit" class="btn view-button w-100">Add Friend</button>
+							</form>
+							{% else %}
+							<form action="{% url 'search:remove_friend' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="friend_id" value="{{ user.id }}">
+								<input type="hidden" name="query" value="{{ query }}">
+								<button type="submit" class="btn btn-danger w-100">Remove Friend</button>
+							</form>
+							{% endif %}
+							{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<p class="text-center text-muted">No users found</p>
+		{% endif %}
+	</div>
 </div>
 {% endblock %}

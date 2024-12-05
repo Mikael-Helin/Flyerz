@@ -32,7 +32,6 @@
                     <p><strong>Date:</strong> {{ event.date|date:"F d, Y H:i" }}</p>
                     <p><strong>Location:</strong> {{ event.location }}</p>
                     <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
-                    <a href="{% url 'events:event_details' event.id %}">View</a>
                 </div>
 
                 <!-- Card Footer -->

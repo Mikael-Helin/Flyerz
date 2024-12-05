@@ -19,46 +19,56 @@ def event_list(request):
 
 
 def event_details(request, event_id):
-    event = Event.objects.get(id=event_id)
+    event = get_object_or_404(Event, id=event_id)
     comments = event.comments.all()
-    user_attending = EventAttendance.objects.filter(event=event, attendee=request.user).exists()
+    user_attending = False
     amount_of_guests = EventAttendance.objects.filter(event=event).count()
 
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        user_attending = EventAttendance.objects.filter(event=event, attendee=request.user).exists()
 
-    if request.method == 'POST' and 'attend' in request.POST:
-        if user_attending:
-            messages.warning(request, 'You are already attending this event')
-        else:
-            EventAttendance.objects.create(event=event, attendee=request.user)
-            messages.success(request, 'You are now attending this event')
-        return redirect('events:event_details', event_id=event_id)
+    # Handle attendance actions
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'You need to be logged in to perform this action.')
+            return redirect('login')  # Redirect to login page or handle as appropriate
 
-    if request.method == 'POST' and 'unattend' in request.POST:
-        if user_attending:
-            EventAttendance.objects.filter(event=event, attendee=request.user).delete()
-            messages.success(request, 'You are no longer attending this event')
-        else:
-            messages.warning(request, 'You are not attending this event')
-        return redirect('events:event_details', event_id=event_id)
-    
+        if 'attend' in request.POST:
+            if user_attending:
+                messages.warning(request, 'You are already attending this event.')
+            else:
+                EventAttendance.objects.create(event=event, attendee=request.user)
+                messages.success(request, 'You are now attending this event.')
+            return redirect('events:event_details', event_id=event_id)
 
-    if request.method == 'POST' and 'comment' in request.POST:
-        comment_form = EventCommentForm(request.POST)
-        if comment_form.is_valid():
-            comment_form.instance.event = event
-            comment_form.instance.author = request.user
-            comment_form.save()
-            return redirect('events:event_details', event_id=event_id) 
+        if 'unattend' in request.POST:
+            if user_attending:
+                EventAttendance.objects.filter(event=event, attendee=request.user).delete()
+                messages.success(request, 'You are no longer attending this event.')
+            else:
+                messages.warning(request, 'You are not attending this event.')
+            return redirect('events:event_details', event_id=event_id)
+
+        if 'comment' in request.POST:
+            comment_form = EventCommentForm(request.POST)
+            if comment_form.is_valid():
+                comment_form.instance.event = event
+                comment_form.instance.author = request.user
+                comment_form.save()
+                messages.success(request, 'Your comment has been posted.')
+                return redirect('events:event_details', event_id=event_id)
     else:
         comment_form = EventCommentForm()
-    
+
     return render(request, 'events/event_details.html', {
         'event': event,
         'comments': comments,
         'comment_form': comment_form,
         'user_attending': user_attending,
         'amount_of_guests': amount_of_guests
-        })
+    })
+
 
 
 def add_event(request):
