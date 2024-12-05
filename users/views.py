@@ -50,3 +50,7 @@ class DeleteUserView(DeleteView):
         logout(request)
         messages.success(request, "Your account has been deleted successfully.")
         return super().delete(request, *args, **kwargs)
+    
+def users_profile(request, user_id):
+    user = User.objects.get(id=user_id)
+    return render(request, 'users/users_profile.html', {'user': user})

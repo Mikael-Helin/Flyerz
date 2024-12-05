@@ -29,7 +29,7 @@
                             <p><strong>Date:</strong> {{ event.date|date:"F d, Y H:i" }}</p>
                             <p><strong>Location:</strong> {{ event.location }}</p>
                             <p><strong>Organizer:</strong> <a
-                                    href="{% url 'users:profile' %}">{{ event.organizer.username }}</a></p>
+                                    href="{% url 'users:users_profile' event.organizer.id%}">{{ event.organizer.username }}</a></p>
 
                             <!-- Attend Information -->
                             <p><strong>Attending:</strong> {{ amount_of_guests }} guests</p>
