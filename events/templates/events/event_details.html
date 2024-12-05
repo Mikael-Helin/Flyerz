@@ -45,6 +45,7 @@
                             <p><a href="{% url 'login' %}">Log in</a> to attend this event.</p>
                             {% endif %}
 
+                            {% if user.is_authenticated %}
                             <form method="post" class="d-flex gap-2">
                                 {% csrf_token %}
                                 {% if user_attending %}
@@ -54,6 +55,7 @@
                                 <button type="submit" name="attend" class="btn btn-success flex-grow-1">Attend</button>
                                 {% endif %}
                             </form>
+                            {% endif %}
                         </div>
                         <!-- Card Footer -->
                         <div class="card-footer text-center">
