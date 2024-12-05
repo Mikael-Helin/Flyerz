@@ -18,12 +18,12 @@
 							class="img-fluid rounded-circle mb-3"
 							style="width: 100px; height: 100px; object-fit: cover;">
 						{% else %}
-						<img src="{% static 'default-profile.jpg' %}" alt="Default profile picture"
+						<img src="{% static 'image/Default.png' %}" alt="Default profile picture"
 							class="img-fluid rounded-circle mb-3"
 							style="width: 100px; height: 100px; object-fit: cover;">
 						{% endif %}
 
-						<h4 class="card-title">{{ user.username }}</h5>
+						<h4 class="card-title"><a href="{% url 'users:users_profile' user.id %}">{{ user.username }}</a></h4>
 
 							{% if request.user.is_authenticated %}
 							{% if user not in friends %}

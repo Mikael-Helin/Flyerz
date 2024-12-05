@@ -10,7 +10,7 @@
         <div class="col-md-9">
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Your Profile</h5>
+                    <h5 class="mb-0">User Profile</h5>
                 </div>
                 <div class="card-body">
                     <!-- Profile Information -->
@@ -21,7 +21,7 @@
                             <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
                                 class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
                             {% else %}
-                            <img src="" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3"
+                            <img src="{% static 'image/Default.png' %}" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3"
                                 style="max-width: 150px;">
                             {% endif %}
 
@@ -52,6 +52,23 @@
                                     {{ user.is_superuser|yesno:"Yes,No" }}
                                 </span>
                             </p>
+                                {% if request.user.is_authenticated %}
+                                {% if user not in friends %}
+                                <form action="{% url 'search:add_friend' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="friend_id" value="{{ user.id }}">
+                                    <input type="hidden" name="query" value="{{ query }}">
+                                    <button type="submit" class="btn view-button w-100">Add Friend</button>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'search:remove_friend' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="friend_id" value="{{ user.id }}">
+                                    <input type="hidden" name="query" value="{{ query }}">
+                                    <button type="submit" class="btn btn-danger w-100">Remove Friend</button>
+                                </form>
+                                {% endif %}
+                                {% endif %}
                         </div>
                     </div>
 
