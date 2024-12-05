@@ -1,6 +1,66 @@
 {% extends "base.html" %}
-{% block body %}
+{% load static %}
 
-hej
-    
-{% endblock %}  
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar Column -->
+
+        <!-- Main Content Column -->
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Your Profile</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Profile Information -->
+                    <div class="row">
+                        <!-- Profile Picture -->
+                        <div class="col-md-4 text-center">
+                            {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
+                                class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                            {% else %}
+                            <img src="" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3"
+                                style="max-width: 150px;">
+                            {% endif %}
+
+                        </div>
+
+                        <!-- User Details -->
+                        <div class="col-md-8">
+                            <h3>{{ user.get_full_name }}</h3>
+                            <p><strong>Username:</strong> {{ user.username }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                            <p><strong>Is Active:</strong>
+                                <span class="badge 
+                                    {% if user.is_active %} bg-success {% else %} bg-danger {% endif %}">
+                                    {{ user.is_active|yesno:"Yes,No" }}
+                                </span>
+                            </p>
+                            <p><strong>Is Staff:</strong>
+                                <span class="badge 
+                                    {% if user.is_staff %} bg-success {% else %} bg-danger {% endif %}">
+                                    {{ user.is_staff|yesno:"Yes,No" }}
+                                </span>
+                            </p>
+                            <p><strong>Is Superuser:</strong>
+                                <span class="badge 
+                                    {% if user.is_superuser %} bg-success {% else %} bg-danger {% endif %}">
+                                    {{ user.is_superuser|yesno:"Yes,No" }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
